@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 @SuppressWarnings({ "resource", "unused" })
@@ -29,6 +30,8 @@ public class ExceptionDemo {
 
 		scanner.close();
 		System.out.println("[done]");
+		
+		// TODO What can go wrong?
 	}
 
 	public static void validationDemo() {
@@ -38,8 +41,36 @@ public class ExceptionDemo {
 
 		Scanner scanner = new Scanner(System.in);
 
-		// TODO Implement validationDemo method
-		throw new UnsupportedOperationException("Not yet implemented.");
+		System.out.print("Enter total points earned: ");
+
+		if (scanner.hasNextInt()) {
+			earned = scanner.nextInt();
+		}
+		else {
+			System.err.println("Please enter integer values.");
+			System.exit(1); // TODO Fix this
+		}
+
+		System.out.print("Enter total points possible: ");
+
+		if (scanner.hasNextInt()) {
+			possible = scanner.nextInt();
+		}
+		else {
+			System.err.println("Please enter integer values.");
+			return;
+		}
+
+		if (earned < 0 || possible <= 0) {
+			System.err.println("Please enter non-negative values.");
+			return;
+		}
+
+		percentage = calcPercentage(earned, possible);
+		printResult(earned, possible, percentage);
+
+		// TODO Finish example
+		System.out.println("[done]");
 	}
 
 	public static void catchAllDemo() {
@@ -49,8 +80,23 @@ public class ExceptionDemo {
 
 		Scanner scanner = null;
 
-		// TODO Implement catchAllDemo method
-		throw new UnsupportedOperationException("Not yet implemented.");
+		try {
+			scanner = new Scanner(System.in);
+
+			System.out.print("Enter total points earned: ");
+			earned = scanner.nextInt();
+
+			System.out.print("Enter total points possible: ");
+			possible = scanner.nextInt();
+
+			percentage = calcPercentage(earned, possible);
+			printResult(earned, possible, percentage);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		// TODO Finish example
 	}
 
 	public static void resourcefulDemo() {
@@ -58,8 +104,30 @@ public class ExceptionDemo {
 		int possible = 0;
 		int percentage = 0;
 
-		// TODO Implement resourcefulDemo method
-		throw new UnsupportedOperationException("Not yet implemented.");
+		try (Scanner scanner = new Scanner(System.in);) {
+			System.out.print("Enter total points earned: ");
+			earned = scanner.nextInt();
+
+			System.out.print("Enter total points possible: ");
+			possible = scanner.nextInt();
+
+			// TODO Fix validation
+			percentage = calcPercentage(earned, possible);
+			printResult(earned, possible, percentage);
+		}
+		catch (InputMismatchException e) {
+			System.err.println("Please enter integer values.");
+		}
+		catch (ArithmeticException e) { // TODO Fix
+			System.err.println("Please enter non-negative values.");
+		}
+		catch (Exception e) {
+			// TODO Discuss
+			System.err.println(e.toString());
+		}
+
+		// TODO Close resource?
+		System.out.println("[done]");
 	}
 
 	public static void main(String[] args) {
