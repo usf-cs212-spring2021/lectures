@@ -137,10 +137,6 @@ public class EliteFileConverter {
 		List<String> inputLines = Files.readAllLines(input, StandardCharsets.UTF_8);
 
 		// creates another arraylist with same size
-		// List<String> outputLines = inputLines.stream()
-		// .map(s -> toLeetSpeak(s))
-		// .collect(Collectors.toList());
-
 		List<String> outputLines = inputLines.stream()
 				.map(EliteFileConverter::toLeetSpeak)
 				.collect(Collectors.toList());

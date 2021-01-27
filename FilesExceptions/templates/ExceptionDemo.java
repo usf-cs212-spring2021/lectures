@@ -18,8 +18,17 @@ public class ExceptionDemo {
 
 		Scanner scanner = new Scanner(System.in);
 
-		// TODO Implement uncaughtDemo method
-		throw new UnsupportedOperationException("Not yet implemented.");
+		System.out.print("Enter total points earned: ");
+		earned = scanner.nextInt();
+
+		System.out.print("Enter total points possible: ");
+		possible = scanner.nextInt();
+
+		percentage = calcPercentage(earned, possible);
+		printResult(earned, possible, percentage);
+
+		scanner.close();
+		System.out.println("[done]");
 	}
 
 	public static void validationDemo() {
