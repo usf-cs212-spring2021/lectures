@@ -38,12 +38,13 @@ public class DirectoryStreamDemo {
 		try (DirectoryStream<Path> listing = Files.newDirectoryStream(directory)) {
 			// use an enhanced-for or for-each loop for efficiency and simplicity
 			for (Path path : listing) {
-				// if (Files.isDirectory(path)) {
-				// System.out.println(path.toString() + "/");
-				// traverseDirectory(path);
-				// } else {
-				// System.out.printf(FORMAT, path.toString(), Files.size(path));
-				// }
+//				if (Files.isDirectory(path)) {
+//					System.out.println(path.toString() + "/");
+//					traverseDirectory(path);
+//				}
+//				else {
+//					System.out.printf(FORMAT, path.toString(), Files.size(path));
+//				}
 
 				// note the duplicated logic above with traverse()!
 				// avoid the duplicated code by just calling the traverse() method
