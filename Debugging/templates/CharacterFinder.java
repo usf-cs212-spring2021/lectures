@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -13,14 +14,22 @@ public class CharacterFinder {
 	public static int findCharacter(Path file, char character, boolean ignoreCase) throws IOException {
 		int count = 0;
 
-		// TODO
+		// TODO 
 
-		try (BufferedReader reader = Files.newBufferedReader(file, Charset.forName("UTF-8"));) {
+		try (BufferedReader reader = Files.newBufferedReader(file, StandardCharsets.UTF_8);) {
 			String line;
 
 			while ((line = reader.readLine()) != null) {
-				// TODO
-				System.out.println(line);
+
+				if (ignoreCase) {
+					line = line.toLowerCase();
+				}
+
+				for (char current : line.toCharArray()) {
+					if (current == character) {
+						count++;
+					}
+				}
 			}
 		}
 
@@ -29,7 +38,7 @@ public class CharacterFinder {
 	}
 
 	public static void main(String[] args) {
-		Path sherlock = Path.of("text", "pg1661.txt").normalize();
+		Path sherlock = Path.of("src", "main", "resources", "pg1661.txt").normalize();
 
 		char lowerC = 'c';
 		char upperC = 'C';
@@ -39,7 +48,7 @@ public class CharacterFinder {
 			int countUppers = findCharacter(sherlock, upperC, false);
 			int countIgnore = findCharacter(sherlock, lowerC, true);
 
-			assert countLowers + countUppers == countIgnore;
+			// TODO
 
 			log.info("Found {} instances of \"{}\" characters.", countLowers, lowerC);
 			log.info("Found {} instances of \"{}\" characters.", countUppers, upperC);

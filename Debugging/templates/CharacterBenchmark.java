@@ -11,8 +11,8 @@ public class CharacterBenchmark {
 		int warmup = 20;
 		int runs = 20;
 
-		Path file1 = Path.of("text", "pg1661.txt");
-		Path file2 = Path.of("text", "pg2701.txt");
+		Path file1 = Path.of("src", "main", "resources", "pg1661.txt");
+		Path file2 = Path.of("src", "main", "resources", "pg2701.txt");
 
 		Instant start;
 		Duration elapsed;
