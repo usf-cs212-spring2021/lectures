@@ -18,7 +18,7 @@ public class WorkQueue {
 	 * Pool of worker threads that will wait in the background until work is
 	 * available.
 	 */
-	private final PoolWorker[] workers;
+	private final Worker[] workers;
 
 	/** Queue of pending work requests. */
 	private final LinkedList<Runnable> queue;
@@ -48,13 +48,13 @@ public class WorkQueue {
 	 */
 	public WorkQueue(int threads) {
 		this.queue = new LinkedList<Runnable>();
-		this.workers = new PoolWorker[threads];
+		this.workers = new Worker[threads];
 
 		shutdown = false;
 
 		// start the threads so they are waiting in the background
 		for (int i = 0; i < threads; i++) {
-			workers[i] = new PoolWorker();
+			workers[i] = new Worker();
 			workers[i].start();
 		}
 		
@@ -103,7 +103,13 @@ public class WorkQueue {
 	 * exit instead of grabbing new work from the queue. These threads will
 	 * continue running in the background until a shutdown is requested.
 	 */
-	private class PoolWorker extends Thread {
+	private class Worker extends Thread {
+		/**
+		 * Initializes a worker thread with a custom name.
+		 */
+		public Worker() {
+			setName("Worker" + getName());
+		}
 
 		@Override
 		public void run() {
@@ -116,9 +122,9 @@ public class WorkQueue {
 							log.debug("Work queue worker waiting...");
 							queue.wait();
 						}
-						catch (InterruptedException ex) {
+						catch (InterruptedException e) {
 							System.err.println("Warning: Work queue interrupted while waiting.");
-							log.catching(Level.DEBUG, ex);
+							log.catching(Level.DEBUG, e);
 							Thread.currentThread().interrupt();
 						}
 					}
@@ -139,10 +145,10 @@ public class WorkQueue {
 					log.debug("Work queue worker found work.");
 					task.run();
 				}
-				catch (RuntimeException ex) {
+				catch (RuntimeException e) {
 					// catch runtime exceptions to avoid leaking threads
 					System.err.println("Warning: Work queue encountered an exception while running.");
-					log.catching(Level.DEBUG, ex);
+					log.catching(Level.DEBUG, e);
 				}
 			}
 		}
